@@ -23,12 +23,14 @@ class Unicom < Formula
     url "https://github.com/moz-sec/#{PRODUCT}/releases/download/v#{VERSION}/#{PRODUCT}-#{VERSION}_linux_arm64.tar.gz"
     sha256 "6501b6647a2273a3f570340f5b4c147ffae7dfae3e161a809db129d74c9d95e4"
   end
+  def install
+    bin.install "unicom"
+    bash_completion.install "completions/unicom-completion.bash" if build.with? "completions"
+    fish_completion.install "completions/unicom-completion.fish" if build.with? "completions"
+    zsh_completion.install "completions/_unicom" if build.with? "completions"
+  end
+  test do unicom-completion.bash
+    system "#{bin}/unicom --version"
+  done
+  end
 end
-def install
-  bin.install "unicom"
-  bash_completion.install "completions/unicom-completions.bash" if build.with? "completions"
-  fish_completion.install "completions/unicom-completions.fish" if build.with? "completions"
-  zsh_completion.install "completions/_unicom" if build.with? "completions"
-end test do
-  system "#{bin}/unicom --version"
-done
